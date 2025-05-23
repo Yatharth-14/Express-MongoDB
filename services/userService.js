@@ -1,12 +1,12 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const User = require("../models/User");
 
 const registerUser = async ({ username, email, password }) => {
   // Check if user exists
   let user = await User.findOne({ email });
   if (user) {
-    throw new Error('User already exists');
+    throw new Error("User already exists");
   }
 
   // Hash password
@@ -24,39 +24,41 @@ const registerUser = async ({ username, email, password }) => {
 
   // Generate JWT
   const payload = { userId: user._id };
-  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
 
-  return { token, message: 'User registered successfully' };
+  return { token, message: "User registered successfully" };
 };
 
 const loginUser = async ({ email, password }) => {
   // Check if user exists
   const user = await User.findOne({ email });
   if (!user) {
-    throw new Error('Invalid credentials');
+    throw new Error("Invalid credentials");
   }
 
   // Verify password
+  // const isMatch = await bcrypt.compareSync(password, user.password);
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
-    throw new Error('Invalid credentials');
+    // throw new Error('Invalid credentials');
+    return res.status(400).json({ message: "Email ya password galat hai" });
   }
 
   // Generate JWT
   const payload = { userId: user._id };
-  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
 
-  return { token, message: 'Login successful' };
+  return { token, message: "Login successful" };
 };
 
 const getAllUsers = async () => {
-  return await User.find().select('-password');
+  return await User.find().select("-password");
 };
 
 const getUserById = async (userId) => {
-  const user = await User.findById(userId).select('-password');
+  const user = await User.findById(userId).select("-password");
   if (!user) {
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
   return user;
 };
@@ -64,9 +66,9 @@ const getUserById = async (userId) => {
 const deleteUserById = async (userId) => {
   const user = await User.findByIdAndDelete(userId);
   if (!user) {
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
-  return { message: 'User deleted successfully' };
+  return { message: "User deleted successfully" };
 };
 
 module.exports = {

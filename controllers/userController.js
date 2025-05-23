@@ -22,7 +22,7 @@ const login = async (req, res) => {
 
 const getUsers = async (req, res) => {
   try {
-    const users = await userService.getAllUsers();
+    const validUser = await userService.getAllUsers();
     res.json(users);
   } catch (err) {
     console.error(err);
