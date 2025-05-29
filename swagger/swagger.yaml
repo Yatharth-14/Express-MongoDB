@@ -99,6 +99,35 @@ components:
         image:
           type: string
           format: binary
+    BrowserCategory:
+      type: object
+      properties:
+        _id:
+          type: string
+        title:
+          type: string
+        color:
+          type: string # Add color field
+        createdAt:
+          type: string
+          format: date-time
+    BrowserCategoryRequest:
+      type: object
+      required:
+        - title
+        - color # Add color to required list
+      properties:
+        title:
+          type: string
+        color:
+          type: string # Add color property
+    BrowserCategoryResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        browserCategory:
+          $ref: "#/components/schemas/BrowserCategory"
 paths:
   /register:
     post:
@@ -110,45 +139,45 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RegisterRequest'
+              $ref: "#/components/schemas/RegisterRequest"
       responses:
-        '201':
+        "201":
           description: User registered successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TokenResponse'
-        '400':
+                $ref: "#/components/schemas/TokenResponse"
+        "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
           description: Server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
     get:
       summary: Get all registered users
       tags:
         - Authentication
       responses:
-        '200':
+        "200":
           description: List of registered users
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/User'
-        '500':
+                  $ref: "#/components/schemas/User"
+        "500":
           description: Server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
   /register/{id}:
     delete:
       summary: Delete a registered user by ID
@@ -162,24 +191,24 @@ paths:
             type: string
           description: ID of the user to delete
       responses:
-        '200':
+        "200":
           description: User deleted successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SuccessResponse'
-        '404':
+                $ref: "#/components/schemas/SuccessResponse"
+        "404":
           description: User not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
           description: Server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
   /login:
     post:
       summary: Login a user
@@ -190,26 +219,26 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LoginRequest'
+              $ref: "#/components/schemas/LoginRequest"
       responses:
-        '200':
+        "200":
           description: Login successful
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TokenResponse'
-        '400':
+                $ref: "#/components/schemas/TokenResponse"
+        "400":
           description: Invalid credentials
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
           description: Server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
   /users:
     get:
       summary: Get all users
@@ -218,26 +247,26 @@ paths:
       security:
         - BearerAuth: []
       responses:
-        '200':
+        "200":
           description: List of users
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/User'
-        '401':
+                  $ref: "#/components/schemas/User"
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
           description: Server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
   /user:
     get:
       summary: Get current authenticated user
@@ -246,30 +275,30 @@ paths:
       security:
         - BearerAuth: []
       responses:
-        '200':
+        "200":
           description: Current user data
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-        '401':
+                $ref: "#/components/schemas/User"
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
           description: User not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
           description: Server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
   /carouselCardImages:
     post:
       summary: Create a new carousel card image
@@ -280,9 +309,9 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/CarouselCardRequest'
+              $ref: "#/components/schemas/CarouselCardRequest"
       responses:
-        '201':
+        "201":
           description: Carousel card created successfully
           content:
             application/json:
@@ -292,35 +321,115 @@ paths:
                   message:
                     type: string
                   carouselCard:
-                    $ref: '#/components/schemas/CarouselCardImage'
-        '400':
+                    $ref: "#/components/schemas/CarouselCardImage"
+        "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
           description: Server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
     get:
       summary: Get all carousel card images
       tags:
         - Carousel
       responses:
-        '200':
+        "200":
           description: List of carousel card images
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/CarouselCardImage'
-        '500':
+                  $ref: "#/components/schemas/CarouselCardImage"
+        "500":
           description: Server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
+  /browserCategories:
+    post:
+      summary: Create a new browser category
+      tags:
+        - BrowserCategory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BrowserCategoryRequest"
+      responses:
+        "201":
+          description: Browser category created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BrowserCategoryResponse"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    get:
+      summary: Get all browser categories
+      tags:
+        - BrowserCategory
+      responses:
+        "200":
+          description: List of browser categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BrowserCategory"
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /browserCategories/{id}:
+    delete:
+      summary: Delete a browser category by ID
+      tags:
+        - BrowserCategory
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID of the browser category to delete
+      responses:
+        "200":
+          description: Browser category deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "404":
+          description: Browser category not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
